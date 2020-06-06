@@ -46,6 +46,16 @@ class Utilisateur implements UserInterface
      */
     private $Prenom;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Adresse;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $Telephone;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,6 +154,30 @@ class Utilisateur implements UserInterface
     public function setPrenom(string $Prenom): self
     {
         $this->Prenom = $Prenom;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->Adresse;
+    }
+
+    public function setAdresse(string $Adresse): self
+    {
+        $this->Adresse = $Adresse;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->Telephone;
+    }
+
+    public function setTelephone(string $Telephone): self
+    {
+        $this->Telephone = $Telephone;
 
         return $this;
     }
