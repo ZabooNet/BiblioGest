@@ -62,6 +62,24 @@ class Livre
      */
     private $update_At;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="livres")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="livres")
+     */
+    private $categorie;
+
+    public function __construct()
+    {
+        $this->created_At=new \DateTime();
+        $this->update_At=new \DateTime();
+        $this->Disponibilite=true;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -174,4 +192,31 @@ class Livre
 
         return $this;
     }
+
+    public function getUser(): ?Utilisateur
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Utilisateur $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
 }
+
+clearstatcache();

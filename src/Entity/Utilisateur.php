@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -55,6 +57,16 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", length=10)
      */
     private $Telephone;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Livre::class, mappedBy="user")
+     */
+    private $livres;
+
+    public function __construct()
+    {
+        $this->livres = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -178,6 +190,37 @@ class Utilisateur implements UserInterface
     public function setTelephone(string $Telephone): self
     {
         $this->Telephone = $Telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Livre[]
+     */
+    public function getLivres(): Collection
+    {
+        return $this->livres;
+    }
+
+    public function addLivre(Livre $livre): self
+    {
+        if (!$this->livres->contains($livre)) {
+            $this->livres[] = $livre;
+            $livre->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivre(Livre $livre): self
+    {
+        if ($this->livres->contains($livre)) {
+            $this->livres->removeElement($livre);
+            // set the owning side to null (unless already changed)
+            if ($livre->getUser() === $this) {
+                $livre->setUser(null);
+            }
+        }
 
         return $this;
     }
